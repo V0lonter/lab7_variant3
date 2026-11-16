@@ -102,3 +102,20 @@ ctest --test-dir build -C Release
 ```
 
 `vcpkg.json` declares the `gtest` dependency, vcpkg installs it automatically during `cmake --preset default`.
+
+## Actual output
+
+```
+[ctor] main
+[ctor] level1
+[ctor] level2
+[ctor] level3
+[dtor] level3
+level2: caught "interpolation point is outside the node range", rethrowing
+[dtor] level2
+[dtor] level1
+[dtor] main
+main: std::out_of_range: interpolation point is outside the node range
+```
+
+The actual order matches the expected one. Destructors run in reverse order of construction during stack unwinding, so no resources are leaked.
